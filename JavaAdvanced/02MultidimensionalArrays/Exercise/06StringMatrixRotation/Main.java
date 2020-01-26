@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input = reader.readLine();
         int rotation = Integer.parseInt(input.substring(input.indexOf("(") + 1, input.indexOf(")")));
@@ -38,6 +40,7 @@ public class Main {
                 break;
         }
         System.out.println(sb);
+        
     }
 
     private static char[][] fillMatrix(List<String> lines, int maxLength) {
@@ -90,4 +93,5 @@ public class Main {
             sb.append(System.lineSeparator());
         }
     }
+
 }
