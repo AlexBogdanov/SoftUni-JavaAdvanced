@@ -4,7 +4,7 @@ public abstract class BasePerson implements Person {
 
     private String name;
 
-    public BasePerson(String name) {
+    protected BasePerson(String name) {
         this.setName(name);
     }
 
