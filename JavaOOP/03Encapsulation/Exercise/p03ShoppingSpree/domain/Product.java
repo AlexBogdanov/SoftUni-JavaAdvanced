@@ -1,11 +1,11 @@
-package p03ShoppingSpree;
+package p03ShoppingSpree.domain;
 
 public class Product {
 
     private String name;
     private double cost;
 
-    public Product(String name, double cost) throws IllegalArgumentException {
+    public Product(String name, double cost) {
         this.setName(name);
         this.setCost(cost);
     }
@@ -16,10 +16,6 @@ public class Product {
 
     private void setName(String name) {
         if (name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty");
-        }
-
-        if (name.length() < 1) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
 

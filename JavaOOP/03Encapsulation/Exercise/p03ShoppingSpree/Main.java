@@ -1,79 +1,77 @@
 package p03ShoppingSpree;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
+
+import p03ShoppingSpree.domain.Person;
+import p03ShoppingSpree.domain.Product;
 
 public class Main {
 
-    private static final String Map = null;
-
     public static void main(String[] args) {
+
+        try {
+            Scanner scanner = new Scanner(System.in);
+            Map<String, Person> people = readPeople(scanner);
+            Map<String, Product> products = readProducts(scanner);
     
-        Scanner scanner = new Scanner(System.in);
-        var people = new HashMap<String, Person>();
-        var products = new HashMap<String, Product>();
-        var counter = 0;
-
-        for (String input = scanner.nextLine(); !input.equals("END"); input = scanner.nextLine()) {
-            counter++;
-            handleInput(input, people, products, counter);
+            buyProducts(scanner, people, products);
+            scanner.close();
+    
+            print(people, products);
+        } catch (IllegalArgumentException iae) {
+            System.out.println(iae.getMessage());
         }
-
-        scanner.close();
-
-        print(people);
 
     }
 
-    private static void print(HashMap<String, Person> people) {
+    private static void print(Map<String, Person> people, Map<String, Product> products) {
         StringBuilder sb = new StringBuilder();
 
-        for (String key : people.keySet()) {
-            Person person = people.get(key);
+        for (String name : people.keySet()) {
+            Person person = people.get(name);
+            sb.append(person.getName() + " - ");
 
-            if (person.getBagOfProducts().size() < 1) {
-                sb.append(key + " - Nothing bought").append(System.lineSeparator());
-                continue;
+            if (person.getProducts().size() > 0) {
+                String prefix = "";
+
+                for (Product product : person.getProducts()) {
+                    sb.append(prefix);
+                    prefix = ", ";
+                    sb.append(product.getName());
+                }
+            } else {
+                sb.append("Nothing bought");
             }
-            
-            sb.append(key + " - " + person.getListedProducts()).append(System.lineSeparator());
+
+            sb.append(System.lineSeparator());
         }
 
         System.out.println(sb);
     }
 
-    private static void handleInput(String input, HashMap<String, Person> people, HashMap<String, Product> products,
-            int counter) {
-        if (counter < 3) {
-            if (counter == 1) {
-                handlePeople(input, people);
-                return;
+    private static void buyProducts(Scanner scanner, Map<String, Person> people, Map<String, Product> products) {
+        for (String input = scanner.nextLine(); !input.equals("END"); input = scanner.nextLine()) {
+            String[] tokens = input.split("\\s+");
+            String personName = tokens[0];
+            String prodName = tokens[1];
+
+            if (!people.containsKey(personName) || !products.containsKey(prodName)) {
+                continue;
             }
 
-            handleProducts(input, products);
-            return;
+            Person person = people.get(personName);
+            person.buyProduct(products.get(prodName));
         }
-
-        handleBuying(input, people, products);
     }
 
-    private static void handleBuying(String input, HashMap<String, Person> people, HashMap<String, Product> products) {
-        String[] tokens = input.split("\\s+");
-        String personName = tokens[0];
-        String prodName = tokens[1];
-
-        Person person = people.get(personName);
-        Product product = products.get(prodName);
-
-        person.buyProduct(product);
-        people.put(personName, person);
-    }
-
-    private static void handleProducts(String input, HashMap<String, Product> products) {
-        String[] split = input.split(";");
+    private static Map<String, Product> readProducts(Scanner scanner) {
+        var products = new LinkedHashMap<String, Product>();
+        String[] split = scanner.nextLine().split(";");
 
         for (int i = 0; i < split.length; i++) {
-            String[] tokens = split[i].split("=")  ;
+            String[] tokens = split[i].split("=");
             String name = tokens[0];
 
             if (products.containsKey(name)) {
@@ -81,18 +79,16 @@ public class Main {
             }
 
             double cost = Double.parseDouble(tokens[1]);
-
-            try {
-                Product product = new Product(name, cost);
-                products.put(name, product);
-            } catch (IllegalArgumentException iae) {
-                System.out.println(iae.getMessage());
-            }
+            Product product = new Product(name, cost);
+            products.put(name, product);
         }
+
+        return products;
     }
 
-    private static void handlePeople(String input, HashMap<String, Person> people) {
-        String[] split = input.split(";");
+    private static Map<String, Person> readPeople(Scanner scanner) {
+        var people = new LinkedHashMap<String, Person>();
+        String[] split = scanner.nextLine().split(";");
 
         for (int i = 0; i < split.length; i++) {
             String[] tokens = split[i].split("=");
@@ -103,14 +99,11 @@ public class Main {
             }
 
             double money = Double.parseDouble(tokens[1]);
-
-            try {
-                Person person = new Person(name, money);
-                people.put(name, person);
-            } catch (IllegalArgumentException iae) {
-                System.out.println(iae.getMessage());
-            }
+            Person person = new Person(name, money);
+            people.put(name, person);
         }
+
+        return people;
     }
 
 }
