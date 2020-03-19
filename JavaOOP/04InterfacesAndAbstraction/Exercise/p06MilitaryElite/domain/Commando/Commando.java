@@ -47,4 +47,25 @@ public class Commando extends SpecialisedSoldier implements ICommando {
         mission.changeState(State.FINISHED);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder missionsStr = new StringBuilder();
+
+        this.missions.stream()
+            .filter(m -> m.getState().getStateValue().equals(State.INPROGRESS.getStateValue()))
+            .forEach(m -> {
+                missionsStr.append(System.lineSeparator()).append(m.toString());
+            });
+
+        return String.format(
+            "Name: %s %s Id: %d Salary: %.2f%nCorps: %s%nMissions:%s",
+            this.getFirstName(),
+            this.getLastName(),
+            this.getId(),
+            this.getSalary(),
+            this.getCorps().getCorpsValue(),
+            missionsStr.toString()
+        );
+    }
+
 }

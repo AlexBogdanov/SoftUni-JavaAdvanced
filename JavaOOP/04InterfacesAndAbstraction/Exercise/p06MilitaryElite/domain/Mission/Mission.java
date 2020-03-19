@@ -27,4 +27,13 @@ public class Mission implements IMission {
         this.state = newState;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "  Code Name: %s State: %s",
+            this.getCodeName(),
+            this.getState().getStateValue()
+        );
+    }
+
 }

@@ -24,4 +24,27 @@ public class LieutenantGeneral extends Private implements ILieutenantGeneral {
         return this.privates;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder privateStr = new StringBuilder();
+
+        this.privates.stream()
+            .sorted((p1, p2) -> {
+                if (p1.getId() > p2.getId()) { return -1; }
+                if (p1.getId() < p2.getId()) { return 1; }
+                return 0;
+            }).forEachOrdered(p -> {
+                privateStr.append(System.lineSeparator()).append("  " + p.toString());
+            });
+
+        return String.format(
+            "Name: %s %s Id: %d Salary: %.2f%nPrivates:%s",
+            this.getFirstName(),
+            this.getLastName(),
+            this.getId(),
+            this.getSalary(),
+            privateStr.toString()
+        );
+    }
+
 }

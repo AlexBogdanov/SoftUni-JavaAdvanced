@@ -16,4 +16,15 @@ public class Spy extends Soldier implements ISpy {
         return this.codeName;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "Name: %s %s Id: %d%nCode Number: %s",
+            this.getFirstName(),
+            this.getLastName(),
+            this.getId(),
+            this.getCodeName()
+        );
+    }
+
 }

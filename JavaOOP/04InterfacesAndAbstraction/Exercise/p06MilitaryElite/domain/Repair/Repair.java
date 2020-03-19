@@ -18,6 +18,15 @@ public class Repair implements IRepair {
     @Override
 	public int getHoursWorked() {
 		return this.hoursWorked;
-	}
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "  Part Name: %s Hours Worked: %d",
+            this.getPartName(),
+            this.getHoursWorked()
+        );
+    }
 
 }

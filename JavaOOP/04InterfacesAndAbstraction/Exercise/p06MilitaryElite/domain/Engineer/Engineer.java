@@ -32,4 +32,23 @@ public class Engineer extends SpecialisedSoldier implements IEngineer {
         this.repairs.add(repair);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder repairsStr = new StringBuilder();
+
+        for (Repair repair : this.repairs) {
+            repairsStr.append(System.lineSeparator()).append(repair.toString());
+        }
+
+        return String.format(
+            "Name: %s %s Id: %d Salary: %.2f%nCorps: %s%nRepairs:%s",
+            this.getFirstName(),
+            this.getLastName(),
+            this.getId(),
+            this.getSalary(),
+            this.getCorps().getCorpsValue(),
+            repairsStr.toString()
+        );
+    }
+
 }
